@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reto Sigma - San Valentín</title>
+    <style>
+        :root {
+            --primary: #ff4d6d;
+            --bg: #0b090a;
+            --text: #ffffff;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* El Corazón */
+        #heart {
+            font-size: 100px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            user-select: none;
+            animation: heartbeat 1.5s infinite;
+        }
+
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .heart-explode {
+            animation: explode 0.8s forwards !important;
+        }
+
+        @keyframes explode {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(30); opacity: 0; }
+        }
+
+        /* La Carta */
+        #letter {
+            display: none;
+            max-width: 500px;
+            background: #fff;
+            color: #333;
+            padding: 40px;
+            border-radius: 5px;
+            box-shadow: 0 10px 30px rgba(255, 77, 109, 0.3);
+            position: relative;
+            transform: translateY(50px);
+            opacity: 0;
+        }
+
+        .show-letter {
+            display: block !important;
+            animation: slideUp 1s forwards ease-out;
+        }
+
+        @keyframes slideUp {
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .letter-content {
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        h2 { color: var(--primary); text-align: center; }
+
+        /* El Contador */
+        #counter-container {
+            margin-top: 50px;
+            text-align: center;
+            font-family: monospace;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .time-unit {
+            display: inline-block;
+            margin: 0 10px;
+        }
+
+        .time-unit span {
+            display: block;
+            font-size: 2rem;
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="heart">❤️</div>
+
+    <div id="letter">
+        <h2>Para El Amor De Mi Vida</h2>
+        <div class="letter-content">
+            <p><strong>Querida Carla:</strong></p>
+            <p>Feliz San Valentín, Mi vida, Ya son dos años celebrando este dia contigo y cada día me enamoro un poquito más. Gracias por ser mi compañera de vida.</p>
+            <p>Te amo con todo mi corazón de aqui hasta la luna a pasitos de tortuga.❤️</p>
+            <p style="text-align: right;"><strong>Con cariño, Adur.</strong></p>
+        </div>
+    </div>
+
+    <div id="counter-container">
+        <h3>Mi amor por ti comenzo hace...</h3>
+        <div id="timer">
+            </div>
+    </div>
+
+    <script>
+        const heart = document.getElementById('heart');
+        const letter = document.getElementById('letter');
+        const counter = document.getElementById('counter-container');
+
+        heart.addEventListener('click', () => {
+            heart.classList.add('heart-explode');
+            
+            setTimeout(() => {
+                heart.style.display = 'none';
+                letter.classList.add('show-letter');
+                counter.style.display = 'block';
+                startTimer();
+            }, 600);
+        });
+
+        function startTimer() {
+            const startDate = new Date("December 14, 2024 00:00:00").getTime();
+
+            setInterval(() => {
+                const now = new Date().getTime();
+                const diff = now - startDate;
+
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+                document.getElementById('timer').innerHTML = `
+                    <div class="time-unit"><span>${days}</span>Días</div>
+                    <div class="time-unit"><span>${hours}</span>Horas</div>
+                    <div class="time-unit"><span>${mins}</span>Mins</div>
+                    <div class="time-unit"><span>${secs}</span>Segs</div>
+                `;
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
